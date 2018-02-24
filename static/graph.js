@@ -34,29 +34,39 @@ d3.json("graph.json", function(json) {
         .on("dragend", dragend);
 
     function dragstart(d, i) {
-        force.stop() // stops the force auto positioning before you start dragging
+      force.stop() // stops the force auto positioning before you start dragging
     }
 
     function dragmove(d, i) {
-        d.px += d3.event.dx;
-        d.py += d3.event.dy;
-        d.x += d3.event.dx;
-        d.y += d3.event.dy; 
-        tick(); // this is the key to make it work together with updating both px,py,x,y on d !
+      d.px += d3.event.dx;
+      d.py += d3.event.dy;
+      d.x += d3.event.dx;
+      d.y += d3.event.dy; 
+      tick(); // this is the key to make it work together with updating both px,py,x,y on d !
     }
 
     function dragend(d, i) {
-        d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
-        tick();
-        force.resume();
-        console.log('dragend', d, i);
+      d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+      tick();
+      force.resume();
+      console.log('dragend', d, i);
     }
 
+    function clicked(d, i) {
+      if (d3.event.defaultPrevented) return; // dragged
+
+      console.log('clicked', d, i);
+      if (d.hasOwnProperty('href')) {
+        console.log('href', d.href);
+        window.open(d.href, '_blank');
+      }
+    }
 
     var node = vis.selectAll("g.node")
         .data(json.nodes)
         .enter().append("svg:g")
         .attr("class", "node")
+        .on('click', clicked)
         .call(node_drag);
 
     node.append("svg:image")

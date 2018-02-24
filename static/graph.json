@@ -2,7 +2,8 @@
   "nodes": [
     {
       "name": "Myriel",
-      "group": 1
+      "group": 1,
+      "href": "http://www.juliendesrosiers.com"
     },
     {
       "name": "Napoleon",
