@@ -9,7 +9,7 @@ var vis = d3.select("body").append("svg:svg")
     .attr("width", w)
     .attr("height", h);
 
-d3.json("graph.json", function(json) {
+d3.json("dynamic_graph.json", function(json) {
     var force = self.force = d3.layout.force()
         .nodes(json.nodes)
         .links(json.links)
@@ -56,9 +56,8 @@ d3.json("graph.json", function(json) {
       if (d3.event.defaultPrevented) return; // dragged
 
       console.log('clicked', d, i);
-      if (d.hasOwnProperty('href')) {
-        console.log('href', d.href);
-        window.open(d.href, '_blank');
+      if (d.hasOwnProperty('url')) {
+        window.open(d.url, '_blank');
       }
     }
 
@@ -81,7 +80,7 @@ d3.json("graph.json", function(json) {
         .attr("class", "nodetext")
         .attr("dx", 12)
         .attr("dy", ".35em")
-        .text(function(d) { return d.name });
+        .text(function(d) { return d.title });
 
     force.on("tick", tick);
 
@@ -94,6 +93,4 @@ d3.json("graph.json", function(json) {
       node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
     };
 
-
 });
-

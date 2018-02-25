@@ -9,5 +9,19 @@
 </head>
 <body>
 <script type="text/javascript" src="/graph.js"></script>
+<div>
+  <form action="/nodes/new" method="post">
+    <select name="type">
+      <option value="node">Basic Node</option>
+      <option value="link">Link</option>
+    </select>
+    <br/>
+    <input type="text" name="title" placeholder="title" /><br/>
+    <input type="text" name="url" placeholder="url" /><br/>
+    <input type="hidden" name="x" value="20" />
+    <input type="hidden" name="y" value="20" />
+    <input type="submit"/>
+  </form>
+</div>
 </body>
 </html>
