@@ -11,12 +11,12 @@ var vis = d3.select("body").append("svg:svg")
 
 d3.json("dynamic_graph.json", function(json) {
     var force = self.force = d3.layout.force()
+        .size([w, h])
         .nodes(json.nodes)
         .links(json.links)
-        .gravity(.05)
+        .gravity(0) // important in order to see the true x/y when we load
         .distance(100)
-        .charge(-100)
-        .size([w, h])
+        .charge(0) // stop nodes from moving after we drag them or after load
         .start();
 
     var link = vis.selectAll("line.link")
@@ -49,6 +49,10 @@ d3.json("dynamic_graph.json", function(json) {
       d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
       tick();
       force.resume();
+      $.post('/nodes/move?id='+d.node_id, {
+        x: d.x,
+        y: d.y
+      });
       console.log('dragend', d, i);
     }
 

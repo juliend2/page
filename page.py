@@ -9,7 +9,7 @@ db = SQLAlchemy(app)
 
 class Node(db.Model):
     __tablename__ = 'nodes'
-    id = db.Column('node_id', db.Integer, primary_key=True)
+    node_id = db.Column('node_id', db.Integer, primary_key=True)
     type = db.Column(db.String)
     title = db.Column(db.String(200))
     url = db.Column(db.String)
@@ -46,6 +46,23 @@ def node_add():
         return "GET"
     else:
         return "WTH?"
+
+@app.route("/nodes/move", methods=['POST'])
+def node_move():
+    _id = str(request.args.get('id', ''))
+    # import pdb; pdb.set_trace()
+    node = db.session.query(Node).filter_by(node_id=_id).first()
+    node.x = int(float(request.form['x']))
+    node.y = int(float(request.form['y']))
+    db.session.commit()
+    return '{"status": "success"}'
+    # db.session.query().filter(Node.node_id == _id).update({ "x": int(float(request.form['x'])), "y": int(float(request.form['y'])) })
+    # db.session.commit()
+    # stmt = Node.update().values({
+        # 'x': request.form['x'],
+        # 'y': request.form['y']
+        # }).where(Node.node_id == _id)
+    # db.session.commmit(stmt)
 
 @app.route("/dynamic_graph.json")
 def graph():
