@@ -1,6 +1,12 @@
 Page
 ====
 
+## Install
+
+```
+pip install -r requirements.txt
+```
+
 ## Create the tables from the models
 
 ```
