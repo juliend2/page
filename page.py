@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from flask import Flask, request
+from flask import Flask, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='')
@@ -41,7 +41,7 @@ def node_add():
                     request.form['x'], request.form['y'])
             db.session.add(node)
             db.session.commit()
-            return '{"status": "success"}'
+            return redirect(url_for('index'))
     elif request.method == 'GET':
         return "GET"
     else:
