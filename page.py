@@ -18,10 +18,11 @@ class Node(db.Model):
     # text = db.Column(db.String)
     created_at = db.Column(db.DateTime)
 
-    def __init__(self, type, title, x, y):
+    def __init__(self, type, title, x, y, url=''):
         self.type = type
         self.title = title
-        self.url = ''
+        if url != '':
+            self.url = url
         self.x = x
         self.y = y
         # self.text = text
@@ -38,7 +39,7 @@ def node_add():
             return '{"status": "error", "message": "Error while validating the fields"}'
         else:
             node = Node(request.form['type'], request.form['title'],
-                    request.form['x'], request.form['y'])
+                    request.form['x'], request.form['y'], request.form['url'])
             db.session.add(node)
             db.session.commit()
             return redirect(url_for('index'))
@@ -98,12 +99,12 @@ def graph():
         _node = node.__dict__
         _node.pop('_sa_instance_state', None)
         _node.pop('created_at', None)
-        if _node['url'] == '':
+        if _node['type'] != 'link':
             _node.pop('url')
         return _node
     _dict = {
         "nodes" : [clean_dict(r) for r in Node.query.all()],
-        "links" : []
+        "links" : [{"source": 1, "target": 0}]
     }
     return json.dumps(_dict)
 
